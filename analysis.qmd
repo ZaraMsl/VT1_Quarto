@@ -1,0 +1,62 @@
+---
+title: "Analysis of babynames dataset"
+---
+
+Those are the librairies we will use for our analysis.
+```{r  }
+#| output: false
+library(babynames)
+library(knitr)
+library(dplyr)
+library(ggplot2)
+```
+
+We will display the first 10 lines of the dataset.
+```{r}
+head(babynames) |> kable()
+```
+
+```{r}
+#| code-fold: true
+get_most_frequent <- function(babynames, select_sex, from = 1950) {
+  most_freq <- babynames |>
+    filter(sex == select_sex, year > from) |>
+    group_by(name) |>
+    summarise(average = mean(prop)) |>
+    arrange(desc(average))
+  return(most_freq)
+}
+
+plot_top <- function(x, babynames, select_sex, top = 10, from = 1950) {
+  topx <- x$name[1:top]
+  
+  p <- babynames |>
+    filter(name %in% topx, sex == select_sex, year > from) |>
+    ggplot(aes(x = year, y = prop, color = name)) +
+    geom_line() +
+    scale_color_brewer(palette = "Paired") +
+    theme_classic()
+  
+  return(p)
+}
+
+```
+
+To plot the top 10 popular girls name :
+```{r}
+#| label: "fig-girls-name"
+#| fig-cap: "Baby girls name popularity from 1950 to now"
+get_most_frequent(babynames, select_sex = "F") |>
+  plot_top(babynames, select_sex = "F", top = 10)
+```
+
+From @fig-girls-name we can see the most popular names are different at each decades. 
+
+
+To plot the top 10 popular boys name :
+
+```{r}
+get_most_frequent(babynames, select_sex = "M") |>
+  plot_top(babynames, select_sex = "M", top = 10)
+```
+
