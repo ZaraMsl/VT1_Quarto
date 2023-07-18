@@ -2,6 +2,8 @@
 title: "Aim"
 ---
 
+[![DOI](https://zenodo.org/badge/667862405.svg)](https://zenodo.org/badge/latestdoi/667862405)
+
 
 In this project we aim to visualize the trends of the most frequently used babynames from 1880 to 2017 in the United States. We do this by:
 
